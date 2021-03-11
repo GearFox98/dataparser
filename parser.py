@@ -9,6 +9,8 @@ PATH = "nil"
 def set_path(PTH: str):
     #Log path
     PATH = PTH
+    if not os._exists(PATH):
+        os.mkdir(PATH)
 
 #Path verification
 def gen_path(file_name):
