@@ -2,51 +2,42 @@ import os
 import logging
 import json
 
-#TODO Set logger
-
-PATH = "nil"
-
-def set_path(PTH: str):
-    #Log path
-    PATH = PTH
-    if not os._exists(PATH):
-        os.mkdir(PATH)
+#TODO Set logger    
 
 #Path verification
-def gen_path(file_name):
-    if PATH == 'nil':
+'''def gen_path(file_name):
+    if file_name == '':
         raise EnvironmentError("No path were specified")
     else:
-        if not (PATH[-1] == "/" or PATH[-1] == "\\"):
-            PATH += os.sep #Add separator if missing
-        return PATH + file_name
+        file_name = "text"
+        strip = file_name.split("/")
+        directory = file_name.replace(strip[-1], "")
+        if not os._exists(file_name):
+            os.mkdir(directory)'''
 
 def write_file(file_name: str, data: dict):
-    path = gen_path(file_name)
+    #gen_path(file_name)
     #Get dict
     if not type(data) == dict:
         raise TypeError("Argument: \"data\" must be dictionary type.\nwrite_file(\"file_name\", \"overwrite\" = True, \"data\" = { }")
     elif data.__len__ == 0:
         raise ValueError("\"data\" must not be empty, for erasing data use clear() instead")
     else:
-        jstream = open(path, "w+")
-        json.dump(data, jstream, False)
+        if os._exists(file_name):
+            os.remove(file_name)
+        jstream = open(file_name, "w+")
+        json.dump(data, jstream)
 
-        jstream.write()
         jstream.close()
 
-def read_file(file_name = "file"):
-    path = gen_path(file_name)
-    if not os._exists(PATH):
-        raise FileNotFoundError(f"File: {PATH} doesn't exists")
-    else:
-        jstream = open(path, "r")
-        json.load(jstream)
+def read_file(file_name: str):
+    jstream = open(file_name, "r")
+    dt = jstream.read()
+    jstream.close()
+    
+    data = json.loads(dt)
 
-        data = jstream.read()
-        jstream.close()
-
-        return data
+    return data
 
 #file_name = Name of the file, data = tuple to filter, returns a tuple
 def get_data(file_name: str, data: tuple):
