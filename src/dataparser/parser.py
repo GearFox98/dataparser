@@ -56,15 +56,28 @@ def read_file(file_name: str):
     return data
 
 #file_name = Name of the file, data = tuple to filter, returns a tuple
-def get_data(file_name: str, data: tuple):
+def get_data(file_name: str, data: tuple, as_dict = False):
     DATA = read_file(file_name)
-    if data.count == 0:
-        return tuple(DATA.values())
+    if as_dict:
+        if data.count == 0:
+            return DATA
+        else:
+            dData = dict()
+            keys = tuple(DATA.keys())
+            values = tuple(DATA.values())
+
+            for x in keys:
+                dData[x] = values[keys.index(x)]
+            
+            return dData
     else:
-        lData = list()
-        for x in data:
-            lData.append(DATA[x])
-        return tuple(lData)
+        if data.count == 0:
+            return tuple(DATA.values())
+        else:
+            lData = list()
+            for x in data:
+                lData.append(DATA[x])
+            return tuple(lData)
 
 def update_file(file_name: str, data: dict):
     file_name = _path_correction(file_name)
