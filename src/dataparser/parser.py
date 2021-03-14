@@ -3,6 +3,11 @@ import logging
 import json
 
 #TODO Set logger    
+logging.basicConfig(
+  level = logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s,"
+)
+LOGGER = logging.getLogger()
+
 
 #Path verification
 '''def gen_path(file_name):
@@ -15,8 +20,15 @@ import json
         if not os._exists(file_name):
             os.mkdir(directory)'''
 
+def path_correction(path):
+    if path.__contains__("\\"):
+        return path.replace("\\", "/")
+    else:
+        return path
+
 def write_file(file_name: str, data: dict):
     #gen_path(file_name)
+    file_name = path_correction(file_name)
     #Get dict
     if not type(data) == dict:
         raise TypeError("Argument: \"data\" must be dictionary type.\nwrite_file(\"file_name\", \"overwrite\" = True, \"data\" = { }")
@@ -29,6 +41,10 @@ def write_file(file_name: str, data: dict):
         json.dump(data, jstream)
 
         jstream.close()
+
+        #Logger
+        log = file_name.split("/")
+        LOGGER.info(f"{log[-1]} successfully created")
 
 def read_file(file_name: str):
     jstream = open(file_name, "r")
@@ -51,6 +67,7 @@ def get_data(file_name: str, data: tuple):
         return tuple(lData)
 
 def update_file(file_name: str, data: dict):
+    file_name = path_correction(file_name)
     if file_name == "":
         raise ValueError("\"file_name\" must not be empty")
     elif data.__len__() == 0:
@@ -61,3 +78,16 @@ def update_file(file_name: str, data: dict):
         for x in keys:
             DATA[x] = data[x]
         write_file(file_name, DATA)
+
+        #Logging
+        log = file_name.split("/")
+        LOGGER.info(f"{log[-1]} updated successfully")
+
+def delete_data(file_name: str):
+    file_name = path_correction(file_name)
+    if file_name == "":
+        raise ValueError("\"file_name\" must not be empty")
+    else:
+        os.remove(file_name)
+        log = file_name.split("/")
+        LOGGER.info(f"{log[-1]} was removed")
