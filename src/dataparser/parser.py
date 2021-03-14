@@ -20,7 +20,7 @@ LOGGER = logging.getLogger()
         if not os._exists(file_name):
             os.mkdir(directory)'''
 
-def path_correction(path):
+def _path_correction(path):
     if path.__contains__("\\"):
         return path.replace("\\", "/")
     else:
@@ -28,7 +28,7 @@ def path_correction(path):
 
 def write_file(file_name: str, data: dict):
     #gen_path(file_name)
-    file_name = path_correction(file_name)
+    file_name = _path_correction(file_name)
     #Get dict
     if not type(data) == dict:
         raise TypeError("Argument: \"data\" must be dictionary type.\nwrite_file(\"file_name\", \"overwrite\" = True, \"data\" = { }")
@@ -67,7 +67,7 @@ def get_data(file_name: str, data: tuple):
         return tuple(lData)
 
 def update_file(file_name: str, data: dict):
-    file_name = path_correction(file_name)
+    file_name = _path_correction(file_name)
     if file_name == "":
         raise ValueError("\"file_name\" must not be empty")
     elif data.__len__() == 0:
@@ -84,7 +84,7 @@ def update_file(file_name: str, data: dict):
         LOGGER.info(f"{log[-1]} updated successfully")
 
 def delete_data(file_name: str):
-    file_name = path_correction(file_name)
+    file_name = _path_correction(file_name)
     if file_name == "":
         raise ValueError("\"file_name\" must not be empty")
     else:
