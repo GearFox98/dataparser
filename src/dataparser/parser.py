@@ -73,15 +73,20 @@ def update_file(file_name: str, data: dict):
     elif data.__len__() == 0:
         raise ValueError("\"data\" must contain data to update")
     else:
-        DATA = read_file(file_name)
-        keys = tuple(data.keys())
-        for x in keys:
-            DATA[x] = data[x]
-        write_file(file_name, DATA)
+        try:
+            DATA = read_file(file_name)
+        except:
+            LOGGER.warning(f"No {file_name} were found, a new file will be created")
+            DATA = dict()
+        finally:
+            keys = tuple(data.keys())
+            for x in keys:
+                DATA[x] = data[x]
+            write_file(file_name, DATA)
 
-        #Logging
-        log = file_name.split("/")
-        LOGGER.info(f"{log[-1]} updated successfully")
+            #Logging
+            log = file_name.split("/")
+            LOGGER.info(f"{log[-1]} updated successfully")
 
 def delete_data(file_name: str):
     file_name = _path_correction(file_name)
