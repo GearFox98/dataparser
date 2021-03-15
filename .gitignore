@@ -1,7 +1,7 @@
 test.py
 __pycache__
-testing
-build
+tests
 dist
 dist
 src/dataparser.egg-info
+build
