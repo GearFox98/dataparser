@@ -109,3 +109,10 @@ def delete_data(file_name: str):
         os.remove(file_name)
         log = file_name.split("/")
         LOGGER.info(f"{log[-1]} was removed")
+
+def delete_many(*file_names: str):
+    for x in file_names:
+        if not type(x) == str:
+            LOGGER.error(f"{x} is not a string")
+        else:
+            delete_data(x)
