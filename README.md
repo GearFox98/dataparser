@@ -7,3 +7,8 @@ using simple filters
 
 ## Known issues
 - The path must exist on drive, the file is authomatically created
+
+
+## Releases
+#### [dataparser-0.0.2](https://github.com/GearFox98/dataparser/releases/tag/0.0.2)
+> Added methods for file deletion and file creation for update method
